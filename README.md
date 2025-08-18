@@ -5,6 +5,8 @@ CLIper – YouTube Video Clipper (TUI)
 
 _Contoh tampilan TUI saat download dan split video_
 
+![Screenshot CLIper](assets/ss_1.png)
+
 💡 Ide Dasar
 ------------
 

@@ -66,41 +66,25 @@ _Contoh tampilan TUI saat download dan split video_
 
 ```
 git clone https://github.com/MashudiSudonym/cliper-youtube-video.git
-```
-```
-```
-    
 
-```
 cd cliper-youtube-video
 ```
-```
-```
-
 2.  Install dependency Dart:
 
 ```
-```
 dart pub get
-```
 ```
 
 3.  Pastikan FFmpeg terinstall dan tersedia di PATH:
 
 ```
-```
 ffmpeg -version
-```
 ```
 
 4.  Jalankan aplikasi:
-
-```
 ```
 dart run
 ```
-```
-
 
 5.  Ikuti instruksi TUI:
     

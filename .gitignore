@@ -4,3 +4,6 @@
 
 # resul video
 *.mp4
+
+# release-files
+releases/*

@@ -2,7 +2,18 @@ import 'dart:io';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class Downloader {
-  static Future<void> downloadVideo(String url, String output) async {
+  static String getHomeDirectory() {
+    if (Platform.isLinux || Platform.isMacOS) {
+      return Platform.environment['HOME'] ?? '/tmp';
+    } else if (Platform.isWindows) {
+      return Platform.environment['USERPROFILE'] ?? r'C:\Temp';
+    } else {
+      return '/tmp';
+    }
+  }
+
+  /// Mengunduh video dari YouTube dan mengembalikan path file hasil download
+  static Future<String> downloadVideo(String url) async {
     final yt = YoutubeExplode();
 
     try {
@@ -11,7 +22,15 @@ class Downloader {
       print('🎥 Judul video: ${video.title}');
       print('⏱ Durasi: ${video.duration}');
 
-      // Ambil stream manifest
+      // Sanitasi judul video untuk jadi nama folder/file (hapus karakter ilegal)
+      var safeTitle = video.title.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_');
+
+      // Folder cross-platform
+      var homeDir = getHomeDirectory();
+      var baseFolder = '$homeDir/Videos/$safeTitle';
+      await Directory(baseFolder).create(recursive: true);
+
+      var outputFile = '$baseFolder/$safeTitle.mp4'; // Ambil stream manifest
       var manifest = await yt.videos.streamsClient.getManifest(video.id);
 
       if (manifest.muxed.isNotEmpty) {
@@ -19,21 +38,21 @@ class Downloader {
         var streamInfo = manifest.muxed.withHighestBitrate();
         var stream = yt.videos.streamsClient.get(streamInfo);
 
-        var file = File(output);
+        var file = File(outputFile);
         var fileStream = file.openWrite();
         await stream.pipe(fileStream);
         await fileStream.flush();
         await fileStream.close();
 
-        print('✅ Download selesai: $output');
+        print('✅ Download selesai: $outputFile');
       } else if (manifest.videoOnly.isNotEmpty &&
           manifest.audioOnly.isNotEmpty) {
         // Fallback: ambil videoOnly + audioOnly lalu merge via ffmpeg
         var videoStreamInfo = manifest.videoOnly.withHighestBitrate();
         var audioStreamInfo = manifest.audioOnly.withHighestBitrate();
 
-        var videoFile = 'video_temp.mp4';
-        var audioFile = 'audio_temp.mp3';
+        var videoFile = '$baseFolder/video_temp.mp4';
+        var audioFile = '$baseFolder/audio_temp.mp3';
 
         // Download video
         var videoStream = yt.videos.streamsClient.get(videoStreamInfo);
@@ -60,7 +79,7 @@ class Downloader {
           'copy',
           '-c:a',
           'aac',
-          output,
+          outputFile,
         ]);
 
         // Hapus temporary file
@@ -72,11 +91,14 @@ class Downloader {
           exit(1);
         }
 
-        print('✅ Download selesai dan merge: $output');
+        print('✅ Download selesai dan merge: $outputFile');
       } else {
         print('❌ Tidak ada stream video/audio yang tersedia.');
         exit(1);
       }
+
+      // Kembalikan path file hasil download
+      return outputFile;
     } catch (e) {
       print('❌ Error saat download: $e');
       exit(1);

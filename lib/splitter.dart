@@ -1,12 +1,16 @@
 import 'dart:io';
+import 'package:path/path.dart' as p;
 
 class Splitter {
   static Future<void> splitAndCropVideo(
     String input,
     int segmentSeconds,
   ) async {
-    // Format output tiap segmen
-    final outputPattern = 'output%03d.mp4';
+    // Ambil folder dari path input
+    final folder = p.dirname(input);
+
+    // Format output tiap segmen di folder yang sama
+    final outputPattern = p.join(folder, 'clip_%03d.mp4');
 
     // FFmpeg command
     final result = await Process.run('ffmpeg', [

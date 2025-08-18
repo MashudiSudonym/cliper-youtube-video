@@ -62,14 +62,46 @@ _Contoh tampilan TUI saat download dan split video_
 ⚡ Cara Penggunaan
 -----------------
 
-1.  Clone repo dan masuk ke folder project:git clone cd cliper
+1.  Clone repo dan masuk ke folder project:
+
+```
+git clone https://github.com/MashudiSudonym/cliper-youtube-video.git
+```
+```
+```
     
-2.  Install dependency Dart:dart pub get
-    
-3.  Pastikan FFmpeg terinstall dan tersedia di PATH:ffmpeg -version
-    
-4.  Jalankan aplikasi:dart run
-    
+
+```
+cd cliper-youtube-video
+```
+```
+```
+
+2.  Install dependency Dart:
+
+```
+```
+dart pub get
+```
+```
+
+3.  Pastikan FFmpeg terinstall dan tersedia di PATH:
+
+```
+```
+ffmpeg -version
+```
+```
+
+4.  Jalankan aplikasi:
+
+```
+```
+dart run
+```
+```
+
+
 5.  Ikuti instruksi TUI:
     
     *   Masukkan URL video YouTube
@@ -78,7 +110,7 @@ _Contoh tampilan TUI saat download dan split video_
         
 6.  Tunggu proses download, merge (jika perlu), split & crop selesai.
     
-    *   Video hasilnya tersimpan sebagai output000.mp4, output001.mp4, dst.
+    *   Video hasilnya tersimpan sebagai output000.mp4, output001.mp4, dst di folder "Videos" dari OS kalian.
         
 
 📌 Catatan
@@ -98,6 +130,7 @@ _Contoh tampilan TUI saat download dan split video_
     
 *   Opsi resolusi output & durasi segmen lebih fleksibel.
     
-*   Konversi CLI → GUI Flutter Desktop / Mobile.
     
 *   Support batch URL untuk beberapa video sekaligus.
+
+*   Live caption bahasa Indonesia otomatis dari audio video menjadi subtitle.

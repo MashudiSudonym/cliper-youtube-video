@@ -110,8 +110,6 @@ dart run
 🚀 Roadmap / Upgrade Selanjutnya
 --------------------------------
 
-*   Progress bar real-time saat download & split.
-    
 *   Opsi resolusi output & durasi segmen lebih fleksibel.
     
     
